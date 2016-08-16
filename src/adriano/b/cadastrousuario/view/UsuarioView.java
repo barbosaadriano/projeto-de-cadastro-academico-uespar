@@ -300,13 +300,17 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
     private void jbtSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalvarActionPerformed
-        enviarForm();
-        try {
-            this.controller.salvar();
-            this.limparCampos();
-            JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar!! "+e.getMessage());
+        if (!(this.controller.getUsuarioManipulado() == null)) {
+            enviarForm();
+            try {
+                this.controller.salvar();
+                this.limparCampos();
+                JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar!! " + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,"Não há nada para salvar!","Alerta",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jbtSalvarActionPerformed
 
@@ -320,7 +324,8 @@ public class UsuarioView extends javax.swing.JInternalFrame {
                 this.controller.excluir();
             }
         } else {
-            JOptionPane.showMessageDialog(this, "não há nada para excluir!");
+            JOptionPane.showMessageDialog(this, "não há nada para excluir!","Alerta",
+                    JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jbtExcluirActionPerformed
 
@@ -378,7 +383,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
 
     private void desabilitarCampos() {
         jtfNome.setEnabled(false);
-        jtfLogin.setEditable(false);
+        jtfLogin.setEnabled(false);
         jcbTipo.setEnabled(false);
         jckAtivo.setEnabled(false);
         jpwSenha.setEnabled(false);
