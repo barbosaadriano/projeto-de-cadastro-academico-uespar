@@ -4,7 +4,6 @@ import adriano.b.cadastrousuario.model.dao.UsuarioDao;
 import adriano.b.cadastrousuario.model.domain.Usuario;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *

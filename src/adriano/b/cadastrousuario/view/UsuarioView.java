@@ -6,6 +6,10 @@
 package adriano.b.cadastrousuario.view;
 
 import adriano.b.cadastrousuario.controller.UsuarioController;
+import adriano.b.cadastrousuario.model.domain.Usuario;
+import com.sun.glass.events.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Administrador
  */
 public class UsuarioView extends javax.swing.JInternalFrame {
-
+    
     private UsuarioController controller;
 
     /**
@@ -131,6 +135,12 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Campos"));
 
         jLabel1.setText("Código");
+
+        jtfCodigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfCodigoFocusLost(evt);
+            }
+        });
 
         jLabel2.setText("Nome");
 
@@ -278,8 +288,8 @@ public class UsuarioView extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
         );
 
         pack();
@@ -307,10 +317,10 @@ public class UsuarioView extends javax.swing.JInternalFrame {
                 this.limparCampos();
                 JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao salvar!! " + e.getMessage(),"Erro",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erro ao salvar!! " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this,"Não há nada para salvar!","Alerta",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Não há nada para salvar!", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jbtSalvarActionPerformed
 
@@ -324,7 +334,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
                 this.controller.excluir();
             }
         } else {
-            JOptionPane.showMessageDialog(this, "não há nada para excluir!","Alerta",
+            JOptionPane.showMessageDialog(this, "não há nada para excluir!", "Alerta",
                     JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jbtExcluirActionPerformed
@@ -333,6 +343,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         this.controller.pesquisar();
         //Criar um Default Table Model caso este não der certo
         DefaultTableModel model = (DefaultTableModel) jtbLista.getModel();
+        model.setRowCount(0);
         for (int i = 0; i < this.controller.getLista().size(); i++) {
             model.addRow(new Object[]{
                 this.controller.getLista().get(i).getCodigo().toString(),
@@ -340,6 +351,33 @@ public class UsuarioView extends javax.swing.JInternalFrame {
             });
         }
     }//GEN-LAST:event_jbtListarActionPerformed
+
+    private void jtfCodigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfCodigoFocusLost
+        
+        if (!jtfCodigo.getText().equals("")) {
+            try {
+                int parseInt = Integer.parseInt(jtfCodigo.getText());                
+                this.controller.pesquisar();
+                List<Usuario> lista = this.controller.getLista();
+                
+                if (lista.size() > 0) {
+                    for (int i = 0; i < lista.size(); i++) {
+                        if (lista.get(i).getCodigo().equals(parseInt)) {
+                            this.controller.setUsuarioManipulado(lista.get(i));
+                            this.recebeForm();
+                            this.habilitarCampos();
+                            break;
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Não ha nada a listar!");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Número inválido!");
+                jtfCodigo.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_jtfCodigoFocusLost
 
 //    Fazer validações - new String(getPassword()) para senha
 //    Fazer receber os dados para o form
@@ -380,7 +418,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         jpwConfirmacao.setEnabled(true);
         jtfCodigo.setEditable(false);
     }
-
+    
     private void desabilitarCampos() {
         jtfNome.setEnabled(false);
         jtfLogin.setEnabled(false);
@@ -390,9 +428,9 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         jpwConfirmacao.setEnabled(false);
         jtfCodigo.setEditable(true);
     }
-
+    
     private void enviarForm() {
-
+        
         if (this.jtfCodigo.getText().equals("")) {
             this.controller.getUsuarioManipulado().setCodigo(null);
         } else {
@@ -413,7 +451,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
             this.controller.getUsuarioManipulado().setStatus(0);
         }
     }
-
+    
     private void limparCampos() {
         jtfLogin.setText("");
         jtfNome.setText("");
@@ -422,5 +460,21 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         jckAtivo.setSelected(false);
         jpwConfirmacao.setText("");
         jpwSenha.setText("");
+    }
+    
+    private void recebeForm() {
+        jtfCodigo.setText(this.controller.getUsuarioManipulado().getCodigo().toString());
+        jtfNome.setText(this.controller.getUsuarioManipulado().getNome());
+        jtfLogin.setText(this.controller.getUsuarioManipulado().getLogin());
+        
+        jcbTipo.setSelectedIndex(this.controller.getUsuarioManipulado().getTipo());
+        
+        if (this.controller.getUsuarioManipulado().getStatus() == 1) {
+            jckAtivo.setSelected(true);
+        } else {
+            jckAtivo.setSelected(false);
+        }
+        jpwSenha.setText(this.controller.getUsuarioManipulado().getSenha());
+        jpwConfirmacao.setText(this.controller.getUsuarioManipulado().getSenha());
     }
 }
