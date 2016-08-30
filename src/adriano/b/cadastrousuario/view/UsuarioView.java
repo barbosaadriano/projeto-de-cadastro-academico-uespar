@@ -10,8 +10,13 @@ import adriano.b.cadastrousuario.model.domain.Usuario;
 import com.sun.glass.events.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import jdk.nashorn.internal.ir.BreakNode;
 
 /**
  *
@@ -27,6 +32,10 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     public UsuarioView() {
         this.controller = new UsuarioController();
         initComponents();
+        this.jtbLista.getColumnModel().getColumn(0).setMaxWidth(100);
+        this.jtbLista.getColumnModel().getColumn(0).setMinWidth(80);
+        this.jtbLista.getColumnModel().getColumn(0).setWidth(80);
+        
     }
 
     /**
@@ -266,7 +275,15 @@ public class UsuarioView extends javax.swing.JInternalFrame {
             new String [] {
                 "Código", "Nome"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jtbLista);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -301,20 +318,25 @@ public class UsuarioView extends javax.swing.JInternalFrame {
 
     private void jbtNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtNovoActionPerformed
         habilitarCampos();
+        this.limparCampos();
         this.controller.novo();
     }//GEN-LAST:event_jbtNovoActionPerformed
 
     private void jbtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCancelarActionPerformed
-        desabilitarCampos();
+        this.desabilitarCampos();
+        this.limparCampos();
         this.controller.setUsuarioManipulado(null);
     }//GEN-LAST:event_jbtCancelarActionPerformed
 
     private void jbtSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSalvarActionPerformed
         if (!(this.controller.getUsuarioManipulado() == null)) {
-            enviarForm();
             try {
+                this.validarForm();
+                enviarForm();
                 this.controller.salvar();
                 this.limparCampos();
+                this.desabilitarCampos();
+                this.jbtListarActionPerformed(evt);
                 JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao salvar!! " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -325,13 +347,23 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtSalvarActionPerformed
 
     private void jbtExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtExcluirActionPerformed
-        if (!(this.controller.getUsuarioManipulado() == null)) {
+           
+        
+        
+        if (
+                (!(this.controller.getUsuarioManipulado() == null))
+                &&
+                (this.controller.getUsuarioManipulado().getCodigo()!=null)
+                ) {
             if (JOptionPane.showConfirmDialog(null,
                     "Deseja realmente remover este registro?",
                     "Excluir registro",
                     JOptionPane.YES_NO_OPTION)
                     == JOptionPane.YES_OPTION) {
                 this.controller.excluir();
+                this.limparCampos();
+                this.desabilitarCampos();
+                this.jbtListarActionPerformed(evt);
             }
         } else {
             JOptionPane.showMessageDialog(this, "não há nada para excluir!", "Alerta",
@@ -340,6 +372,8 @@ public class UsuarioView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbtExcluirActionPerformed
 
     private void jbtListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtListarActionPerformed
+
+        
         this.controller.pesquisar();
         //Criar um Default Table Model caso este não der certo
         DefaultTableModel model = (DefaultTableModel) jtbLista.getModel();
@@ -442,7 +476,7 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         this.controller.getUsuarioManipulado()
                 .setLogin(this.jtfLogin.getText());
         this.controller.getUsuarioManipulado()
-                .setSenha(this.jpwSenha.getPassword().toString());
+                .setSenha( new String( this.jpwSenha.getPassword() ) );
         this.controller.getUsuarioManipulado()
                 .setTipo(jcbTipo.getSelectedIndex());
         if (jckAtivo.isSelected()) {
@@ -476,5 +510,24 @@ public class UsuarioView extends javax.swing.JInternalFrame {
         }
         jpwSenha.setText(this.controller.getUsuarioManipulado().getSenha());
         jpwConfirmacao.setText(this.controller.getUsuarioManipulado().getSenha());
+    }
+
+    private void validarForm() throws Exception {
+       if (  new String(jpwSenha.getPassword()).equals("") ) {
+           throw new Exception("A senha não pode ser vazia!");
+       }
+       if ( ! new String(jpwSenha.getPassword())
+               .equals(new String(jpwConfirmacao.getPassword())) ) {
+           throw new Exception("A senha é diferente da Confirmação!");
+       }
+       if ( jtfNome.getText().equals("")) {
+           throw new Exception("O campo nome não pode ser vazio!");
+       }
+       if (jtfLogin.getText().equals("")) {
+           throw new Exception("O campo login não pode ser vazio!");
+       }
+       if (jcbTipo.getSelectedIndex()==0) {
+           throw new Exception("É necessário escolher ao menos um tipo!");
+       }
     }
 }
