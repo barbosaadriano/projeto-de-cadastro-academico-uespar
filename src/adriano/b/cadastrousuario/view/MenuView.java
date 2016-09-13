@@ -36,12 +36,14 @@ public class MenuView extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
+        itemMarcaOpen = new javax.swing.JMenuItem();
+        itemAbreGrupo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Usuários");
         setResizable(false);
 
-        fileMenu.setMnemonic('f');
+        fileMenu.setMnemonic('C');
         fileMenu.setText("Cadastros");
 
         openMenuItem.setMnemonic('o');
@@ -52,6 +54,24 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
         fileMenu.add(openMenuItem);
+
+        itemMarcaOpen.setMnemonic('M');
+        itemMarcaOpen.setText("Marca");
+        itemMarcaOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMarcaOpenActionPerformed(evt);
+            }
+        });
+        fileMenu.add(itemMarcaOpen);
+
+        itemAbreGrupo.setMnemonic('G');
+        itemAbreGrupo.setText("Grupo");
+        itemAbreGrupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAbreGrupoActionPerformed(evt);
+            }
+        });
+        fileMenu.add(itemAbreGrupo);
 
         menuBar.add(fileMenu);
 
@@ -77,6 +97,20 @@ public class MenuView extends javax.swing.JFrame {
         usuarioView.setVisible(true);
         this.centralizaForm(usuarioView);
     }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void itemMarcaOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMarcaOpenActionPerformed
+        MarcaView mv = new MarcaView();
+        this.desktopPane.add(mv);
+        mv.setVisible(true);
+        this.centralizaForm(mv);
+    }//GEN-LAST:event_itemMarcaOpenActionPerformed
+
+    private void itemAbreGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAbreGrupoActionPerformed
+     GrupoView gv = new GrupoView();
+     this.desktopPane.add(gv);
+     gv.setVisible(true);
+     this.centralizaForm(gv);
+    }//GEN-LAST:event_itemAbreGrupoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,6 +150,8 @@ public class MenuView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem itemAbreGrupo;
+    private javax.swing.JMenuItem itemMarcaOpen;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     // End of variables declaration//GEN-END:variables
