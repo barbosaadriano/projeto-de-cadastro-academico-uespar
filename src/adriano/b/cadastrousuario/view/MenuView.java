@@ -38,6 +38,7 @@ public class MenuView extends javax.swing.JFrame {
         openMenuItem = new javax.swing.JMenuItem();
         itemMarcaOpen = new javax.swing.JMenuItem();
         itemAbreGrupo = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Usuários");
@@ -72,6 +73,14 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
         fileMenu.add(itemAbreGrupo);
+
+        jMenuItem1.setText("TelaUsuario Teste");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem1);
 
         menuBar.add(fileMenu);
 
@@ -111,6 +120,13 @@ public class MenuView extends javax.swing.JFrame {
      gv.setVisible(true);
      this.centralizaForm(gv);
     }//GEN-LAST:event_itemAbreGrupoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        UsuarioView1 uv = new UsuarioView1();
+        this.desktopPane.add(uv);
+        uv.setVisible(true);
+        this.centralizaForm(uv);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,6 +168,7 @@ public class MenuView extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem itemAbreGrupo;
     private javax.swing.JMenuItem itemMarcaOpen;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     // End of variables declaration//GEN-END:variables
