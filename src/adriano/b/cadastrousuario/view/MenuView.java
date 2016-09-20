@@ -39,6 +39,7 @@ public class MenuView extends javax.swing.JFrame {
         itemMarcaOpen = new javax.swing.JMenuItem();
         itemAbreGrupo = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        itemProduto = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Usuários");
@@ -81,6 +82,14 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
         fileMenu.add(jMenuItem1);
+
+        itemProduto.setText("Produto");
+        itemProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemProdutoActionPerformed(evt);
+            }
+        });
+        fileMenu.add(itemProduto);
 
         menuBar.add(fileMenu);
 
@@ -128,6 +137,13 @@ public class MenuView extends javax.swing.JFrame {
         this.centralizaForm(uv);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void itemProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemProdutoActionPerformed
+        ProdutoView pv = new ProdutoView();
+        this.desktopPane.add(pv);
+        pv.setVisible(true);
+        this.centralizaForm(pv);
+    }//GEN-LAST:event_itemProdutoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -168,6 +184,7 @@ public class MenuView extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem itemAbreGrupo;
     private javax.swing.JMenuItem itemMarcaOpen;
+    private javax.swing.JMenuItem itemProduto;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
