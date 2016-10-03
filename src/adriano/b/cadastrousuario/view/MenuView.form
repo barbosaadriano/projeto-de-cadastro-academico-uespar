@@ -13,7 +13,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
               <Properties>
                 <Property name="mnemonic" type="int" value="111"/>
-                <Property name="text" type="java.lang.String" value="Usuario"/>
+                <Property name="text" type="java.lang.String" value="1 - Usu&#xe1;rio"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openMenuItemActionPerformed"/>
@@ -22,7 +22,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="itemMarcaOpen">
               <Properties>
                 <Property name="mnemonic" type="int" value="77"/>
-                <Property name="text" type="java.lang.String" value="Marca"/>
+                <Property name="text" type="java.lang.String" value="2 - Marca"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMarcaOpenActionPerformed"/>
@@ -31,7 +31,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="itemAbreGrupo">
               <Properties>
                 <Property name="mnemonic" type="int" value="71"/>
-                <Property name="text" type="java.lang.String" value="Grupo"/>
+                <Property name="text" type="java.lang.String" value="3 - Grupo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemAbreGrupoActionPerformed"/>
@@ -39,7 +39,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="TelaUsuario Teste"/>
+                <Property name="text" type="java.lang.String" value="5 - Usu&#xe1;rio (senha criptogradada)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
@@ -47,10 +47,18 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemProduto">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Produto"/>
+                <Property name="text" type="java.lang.String" value="4 - Produto"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemProdutoActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="6 -Cliente (avalia&#xe7;&#xe3;o)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -74,7 +82,7 @@
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
-    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
