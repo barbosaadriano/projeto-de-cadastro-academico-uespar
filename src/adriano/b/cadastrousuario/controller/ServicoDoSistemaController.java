@@ -61,5 +61,12 @@ public class ServicoDoSistemaController {
             this.salvar(servico);
         }
     }
+
+    public void removerVarios(List<ServicoDoSistema> removidos) throws Exception {
+        for (int i = 0; i < removidos.size(); i++) {
+            ServicoDoSistema get = removidos.get(i);
+            this.excluir(get);
+        }
+    }
     
 }

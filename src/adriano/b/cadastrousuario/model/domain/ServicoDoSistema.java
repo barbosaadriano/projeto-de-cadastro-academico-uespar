@@ -80,5 +80,10 @@ public class ServicoDoSistema {
         propertyChangeSupport.firePropertyChange(PROP_STATUS, oldStatus, status);
     }
 
+    public ServicoDoSistema() {
+        this.status = 1;
+    }
+
+    
     
 }

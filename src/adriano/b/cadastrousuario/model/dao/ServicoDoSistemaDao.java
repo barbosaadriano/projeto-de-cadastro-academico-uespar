@@ -52,7 +52,7 @@ public class ServicoDoSistemaDao {
             ps.setString(2, nome);
             ps.setString(3, descricao);
             ps.setInt(4, status);
-            ps.setInt(1, codigo);
+            ps.setInt(1, 0);
         }
         ps.execute();
     }
@@ -90,9 +90,8 @@ public class ServicoDoSistemaDao {
 
     public List<ServicoDoSistema> listarPorNome(String p) throws SQLException {
         StringBuilder sql = new StringBuilder();
-        sql.append("select * from sis_servicos where nome like '?%' ");
+        sql.append("select * from sis_servicos where nome like '"+p+"%' ");
         PreparedStatement ps = this.cnx.prepareStatement(sql.toString());
-        ps.setString(1, p);
         boolean execute = ps.execute();
         List<ServicoDoSistema> lista = new ArrayList<ServicoDoSistema>();
         if (execute) {

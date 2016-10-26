@@ -7,10 +7,13 @@ package adriano.b.cadastrousuario.view;
 
 import adriano.b.cadastrousuario.controller.ServicoDoSistemaController;
 import adriano.b.cadastrousuario.model.domain.ServicoDoSistema;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
 import javax.swing.JOptionPane;
 import org.jdesktop.observablecollections.ObservableCollections;
-
 
 /**
  *
@@ -19,16 +22,19 @@ import org.jdesktop.observablecollections.ObservableCollections;
 public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
     private ServicoDoSistemaController c;
+    private List<ServicoDoSistema> removidos;
+
     /**
      * Creates new form ServicoDoSistemaView
      */
     public ServicoDoSistemaView() {
         initComponents();
+        this.removidos = new ArrayList<ServicoDoSistema>();
         try {
             this.c = new ServicoDoSistemaController();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Houve erros: "
-                    +ex.getMessage());
+                    + ex.getMessage());
         }
     }
 
@@ -47,7 +53,6 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
         btNovo = new javax.swing.JButton();
         btSalvar = new javax.swing.JButton();
         btRemover = new javax.swing.JButton();
-        btCancelar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         txtPesquisa = new javax.swing.JTextField();
         btPesquisar = new javax.swing.JButton();
@@ -66,13 +71,14 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
         listaDeServico = ObservableCollections.observableList(listaDeServico);
 
+        setClosable(true);
         setTitle("Cadastro de serviços do sistema");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Controles"));
 
         btNovo.setText("Novo");
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, btSalvar, org.jdesktop.beansbinding.ELProperty.create("${enabled==false}"), btNovo, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement==null}"), btNovo, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         btNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -82,10 +88,6 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
         });
 
         btSalvar.setText("Salvar");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btSalvar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
-
         btSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSalvarActionPerformed(evt);
@@ -97,10 +99,11 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), btRemover, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        btCancelar.setText("Cancelar");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, btSalvar, org.jdesktop.beansbinding.ELProperty.create("${enabled==true}"), btCancelar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
-        bindingGroup.addBinding(binding);
+        btRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -112,8 +115,6 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
                 .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,8 +123,7 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btNovo)
                     .addComponent(btSalvar)
-                    .addComponent(btRemover)
-                    .addComponent(btCancelar))
+                    .addComponent(btRemover))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -131,13 +131,25 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
         txtPesquisa.setToolTipText("");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, btSalvar, org.jdesktop.beansbinding.ELProperty.create("${enabled==false}"), txtPesquisa, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement==null}"), txtPesquisa, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesquisaKeyReleased(evt);
+            }
+        });
 
         btPesquisar.setText("pesquisar");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, btSalvar, org.jdesktop.beansbinding.ELProperty.create("${enabled==false}"), btPesquisar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement==null}"), btPesquisar, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
+
+        btPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPesquisarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -162,6 +174,8 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Formulário"));
 
         jLabel1.setText("Código");
+
+        txtCodigo.setEditable(false);
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigo}"), txtCodigo, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
@@ -191,9 +205,9 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inativo", "Ativo" }));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.status}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.status}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("selectedIndex"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -222,7 +236,7 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(cbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cbStatus, 0, 256, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -247,30 +261,6 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista"));
 
-        tblLista.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Código", "Nome", "Descrição"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listaDeServico, tblLista);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigo}"));
         columnBinding.setColumnName("Codigo");
@@ -281,6 +271,9 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
         columnBinding.setColumnName("Descricao");
         columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status}"));
+        columnBinding.setColumnName("Status");
+        columnBinding.setColumnClass(Integer.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblLista);
@@ -313,18 +306,74 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
-        // TODO add your handling code here:
+        if (removidos.size() > 0) {
+            try {
+                this.c.removerVarios(removidos);
+                JOptionPane.showMessageDialog(this, "os registros foram removidos!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao tentar remover "
+                        + e.getMessage());
+            }
+        }
+        if (listaDeServico.size() > 0) {
+            try {
+                this.c.salvarTodos(listaDeServico);
+                JOptionPane.showMessageDialog(this, "os registros foram salvos!");
+                listaDeServico.clear();
+                listaDeServico.addAll(this.c.pesquisar(""));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao tentar salvar "
+                        + ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Não há nada para salvar!");
+        }
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
         listaDeServico.add(new ServicoDoSistema());
-        tblLista.setRowSelectionInterval(tblLista.getRowCount()-1, 
-                tblLista.getRowCount()-1);
+        tblLista.setRowSelectionInterval(tblLista.getRowCount() - 1,
+                tblLista.getRowCount() - 1);
     }//GEN-LAST:event_btNovoActionPerformed
+
+    private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
+        int[] linhasSelecionadas = tblLista.getSelectedRows();
+        tblLista.clearSelection();
+        for (int i = linhasSelecionadas.length - 1; i >= 0; i--) {
+            int linha = linhasSelecionadas[i];
+            if (listaDeServico.get(linha).getCodigo() != null) {
+                removidos.add(listaDeServico.get(linha));
+            }
+            listaDeServico.remove(linha);
+        }
+        if (removidos.size() > 0) {
+            JOptionPane.showMessageDialog(this, "Itens removidos, salve para "
+                    + "cofirmar!");
+        }
+    }//GEN-LAST:event_btRemoverActionPerformed
+
+    private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
+        try {
+            listaDeServico.clear();
+            listaDeServico.addAll(this.c.pesquisar(txtPesquisa.getText()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "houve erros ao pesquisar! "
+                    + ex.getMessage());
+        }
+    }//GEN-LAST:event_btPesquisarActionPerformed
+
+    private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
+        try {
+            listaDeServico.clear();
+            listaDeServico.addAll(this.c.pesquisar(txtPesquisa.getText()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "houve erros ao pesquisar! "
+                    + ex.getMessage());
+        }
+    }//GEN-LAST:event_txtPesquisaKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btCancelar;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btRemover;
