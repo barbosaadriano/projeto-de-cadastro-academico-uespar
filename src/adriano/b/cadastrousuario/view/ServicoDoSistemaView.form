@@ -322,8 +322,8 @@
             </Property>
           </Properties>
           <BindingProperties>
+            <BindingProperty name="selectedItem" source="tblLista" sourcePath="${selectedElement.status}" target="cbStatus" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
             <BindingProperty name="enabled" source="tblLista" sourcePath="${selectedElement!=null}" target="cbStatus" targetPath="enabled" updateStrategy="0" immediately="false"/>
-            <BindingProperty name="selectedIndex" source="tblLista" sourcePath="${selectedElement.status}" target="cbStatus" targetPath="selectedIndex" updateStrategy="0" immediately="false"/>
           </BindingProperties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -348,14 +348,14 @@
               <Subbinding sourcePath="${codigo}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
               </Subbinding>
-              <Subbinding sourcePath="${nome}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-              </Subbinding>
               <Subbinding sourcePath="${descricao}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
+              <Subbinding sourcePath="${nome}">
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
               <Subbinding sourcePath="${status}">
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

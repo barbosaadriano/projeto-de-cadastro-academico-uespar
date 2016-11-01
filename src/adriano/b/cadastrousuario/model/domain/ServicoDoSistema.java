@@ -66,22 +66,22 @@ public class ServicoDoSistema {
         propertyChangeSupport.firePropertyChange(PROP_DESCRICAO, oldDescricao, descricao);
     }
 
-        private Integer status;
+    private String status;
 
     public static final String PROP_STATUS = "status";
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        Integer oldStatus = this.status;
+    public void setStatus(String status) {
+        String oldStatus = this.status;
         this.status = status;
         propertyChangeSupport.firePropertyChange(PROP_STATUS, oldStatus, status);
     }
 
     public ServicoDoSistema() {
-        this.status = 1;
+        this.status = "Ativo";
     }
 
     

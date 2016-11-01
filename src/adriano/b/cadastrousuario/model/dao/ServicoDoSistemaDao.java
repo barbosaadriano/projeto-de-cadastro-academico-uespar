@@ -25,7 +25,7 @@ public class ServicoDoSistemaDao {
         Integer codigo = s.getCodigo();
         String nome = s.getNome();
         String descricao = s.getDescricao();
-        Integer status = s.getStatus();
+        String status = s.getStatus();
         StringBuilder sql = new StringBuilder();
         PreparedStatement ps;
         if (codigo != null) {
@@ -38,7 +38,7 @@ public class ServicoDoSistemaDao {
             ps = this.cnx.prepareStatement(sql.toString());
             ps.setString(1, nome);
             ps.setString(2, descricao);
-            ps.setInt(3, status);
+            ps.setString(3, status);
             ps.setInt(4, codigo);
 
         } else {
@@ -51,7 +51,7 @@ public class ServicoDoSistemaDao {
             ps = this.cnx.prepareStatement(sql.toString());
             ps.setString(2, nome);
             ps.setString(3, descricao);
-            ps.setInt(4, status);
+            ps.setString(4, status);
             ps.setInt(1, 0);
         }
         ps.execute();
@@ -79,7 +79,7 @@ public class ServicoDoSistemaDao {
                 s.setCodigo(rs.getInt("codigo"));
                 s.setDescricao(rs.getString("descricao"));
                 s.setNome(rs.getString("nome"));
-                s.setStatus(rs.getInt("status"));
+                s.setStatus(rs.getString("status"));
                 lista.add(s);
             }
             return lista;
@@ -101,7 +101,7 @@ public class ServicoDoSistemaDao {
                 s.setCodigo(rs.getInt("codigo"));
                 s.setDescricao(rs.getString("descricao"));
                 s.setNome(rs.getString("nome"));
-                s.setStatus(rs.getInt("status"));
+                s.setStatus(rs.getString("status"));
                 lista.add(s);
             }
             return lista;

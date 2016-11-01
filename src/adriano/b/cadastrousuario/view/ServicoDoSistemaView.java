@@ -205,9 +205,9 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
         cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inativo", "Ativo" }));
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.status}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.status}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("selectedIndex"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblLista, org.jdesktop.beansbinding.ELProperty.create("${selectedElement!=null}"), cbStatus, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -265,15 +265,15 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigo}"));
         columnBinding.setColumnName("Codigo");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
-        columnBinding.setColumnName("Nome");
-        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${descricao}"));
         columnBinding.setColumnName("Descricao");
         columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
+        columnBinding.setColumnName("Nome");
+        columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status}"));
         columnBinding.setColumnName("Status");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(tblLista);
@@ -364,8 +364,10 @@ public class ServicoDoSistemaView extends javax.swing.JInternalFrame {
 
     private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
         try {
-            listaDeServico.clear();
-            listaDeServico.addAll(this.c.pesquisar(txtPesquisa.getText()));
+            if (txtPesquisa.getText().length() > 2) {
+                listaDeServico.clear();
+                listaDeServico.addAll(this.c.pesquisar(txtPesquisa.getText()));
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "houve erros ao pesquisar! "
                     + ex.getMessage());
